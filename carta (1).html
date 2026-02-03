@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta para Katia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Animación de corazones flotantes */
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 105, 180, 0.6);
+            transform: rotate(45deg);
+            animation: float 15s infinite;
+            opacity: 0;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 105, 180, 0.6);
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            left: -15px;
+        }
+
+        .heart::after {
+            top: -15px;
+        }
+
+        @keyframes float {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(45deg) scale(0.5);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(405deg) scale(1.2);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #d63384;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .letter-content {
+            color: #333;
+            font-size: 1.15em;
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 30px;
+        }
+
+        .letter-content p {
+            margin-bottom: 20px;
+        }
+
+        #hiddenContent {
+            display: none;
+            animation: fadeInText 1.5s ease-in;
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 20, 147, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .signature {
+            text-align: right;
+            font-style: italic;
+            color: #d63384;
+            margin-top: 30px;
+            font-size: 1.2em;
+        }
+
+        /* Efecto de corazón pulsante después de mostrar el contenido */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .pulse-heart {
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .letter-content {
+                font-size: 1em;
+            }
+
+            button {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+
+            #youtube-player {
+                bottom: 10px;
+                right: 10px;
+            }
+
+            #ytplayer {
+                width: 250px;
+                height: 70px;
+            }
+        }
+
+        /* Botón para minimizar/maximizar reproductor */
+        .toggle-music {
+            position: fixed;
+            bottom: 110px;
+            right: 20px;
+            background: rgba(255, 105, 180, 0.9);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 0.9em;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .toggle-music:hover {
+            background: rgba(255, 20, 147, 1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Reproductor de YouTube oculto -->
+    <div id="youtube-player" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: none;">
+        <iframe id="ytplayer" width="300" height="80" 
+                src="https://www.youtube.com/embed/MblwkUWJxBI?autoplay=1&loop=1&playlist=MblwkUWJxBI&controls=1" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+                style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+        </iframe>
+    </div>
+
+    <!-- Botón para minimizar/mostrar música -->
+    <button class="toggle-music" id="toggleMusic" onclick="togglePlayer()">🎵 Ocultar</button>
+    <div class="container">
+        <h2>Querida Katia</h2>
+        
+        <div class="letter-content">
+            <p>
+                Quiero pedirte perdón de todo corazón. Sé que cometí errores que te lastimaron y lamento profundamente el daño que te causé; no hay excusa que lo borre, solo mi arrepentimiento sincero. También quiero aclarar lo de esos chismes: nunca quise hacerte daño, solo intenté protegerte y fallé en hacerlo de la manera correcta.
+            </p>
+
+            <div id="hiddenContent">
+                <p>
+                    Respeto tu decisión de estar con otra persona y entiendo que esa es tu elección; aun así, necesito decirte que en mi corazón nuestra historia no está completamente terminada, que siento que nuestro capítulo aún no llega a su fin.
+                </p>
+                <p>
+                    Te agradezco cada risa, cada gesto de cariño, todo el amor y el tiempo que compartimos —me hicieron mejor y siempre los llevaré conmigo.
+                </p>
+                <p>
+                    No pretendo presionarte, pero quiero que sepas que nunca te voy a soltar en mi memoria ni en mi cariño. Si algún día consideras tenerme en tu vida, aunque sea de lejitos, te agradecería que me permitieras ese espacio.
+                </p>
+                
+                <div class="signature">
+                    Con cariño y respeto, tu morenito ❤️
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container" id="buttonContainer">
+            <button onclick="showRestOfLetter()">Continuar leyendo...</button>
+        </div>
+    </div>
+
+    <script>
+        let playerVisible = true;
+
+        // Verificar si debe reproducir música
+        window.addEventListener('load', function() {
+            if (localStorage.getItem('playMusic') === 'true') {
+                document.getElementById('youtube-player').style.display = 'block';
+                document.getElementById('toggleMusic').style.display = 'block';
+                localStorage.removeItem('playMusic'); // Limpiar para la próxima vez
+            }
+        });
+
+        // Función para mostrar/ocultar el reproductor
+        function togglePlayer() {
+            const player = document.getElementById('youtube-player');
+            const button = document.getElementById('toggleMusic');
+            
+            if (playerVisible) {
+                player.style.display = 'none';
+                button.textContent = '🎵 Mostrar';
+                playerVisible = false;
+            } else {
+                player.style.display = 'block';
+                button.textContent = '🎵 Ocultar';
+                playerVisible = true;
+            }
+        }
+
+        // Crear corazones flotantes
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 20000);
+        }
+
+        // Crear múltiples corazones
+        setInterval(createHeart, 800);
+        
+        // Crear corazones iniciales
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createHeart, i * 200);
+        }
+
+        function showRestOfLetter() {
+            const hiddenContent = document.getElementById('hiddenContent');
+            const buttonContainer = document.getElementById('buttonContainer');
+            const container = document.querySelector('.container');
+            
+            // Ocultar el botón
+            buttonContainer.style.display = 'none';
+            
+            // Mostrar el contenido oculto
+            hiddenContent.style.display = 'block';
+            
+            // Agregar efecto de pulso al contenedor
+            container.classList.add('pulse-heart');
+            
+            // Crear más corazones en celebración
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+            
+            // Hacer scroll suave hacia el final
+            setTimeout(() => {
+                hiddenContent.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 300);
+        }
+    </script>
+</body>
+</html>
